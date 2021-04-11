@@ -34,3 +34,7 @@ Visual representation onto Olin google maps image
 
 ### Research:
 ___
+https://en.wikipedia.org/wiki/A*_search_algorithm
+https://realitybytes.blog/2017/07/11/graph-based-path-planning-dijkstras-algorithm/
+https://realitybytes.blog/2018/08/17/graph-based-path-planning-a/
+http://correll.cs.colorado.edu/?p=965
