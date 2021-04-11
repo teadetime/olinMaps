@@ -20,13 +20,13 @@ May 10: Project due
 
 ### Goals:
 ___
-##### MVP:
+###### MVP:
 Undirected Graph with just distance (weight) between nodes
 Path calculation between 2 points in better than brute force time
 Visual representation of our graph! (Using networkx)
 Final deliverable fits in on a portfolio! (Github pages?)
 
-#### Stretch:
+###### Stretch:
 Directed graph (take gravity into account when considering ease of travel)
 Route calculation (a chain of points)
 Multiple algorithms compared (aka more lookup tables etc)
