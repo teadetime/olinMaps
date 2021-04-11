@@ -1,8 +1,7 @@
 ## OlinMaps™ 
 (It will be at least better than Apple Maps)
-___
 Nathan Faber (He/Him) and Zoë McGinnis (She/Her) Saprina Pereira (She/Her)
-
+___
 ### Project Plan (we talked with Duncan!):
 ___
 This project seeks to look at optimal path planning given a weighted graph. We will be doing this within the scope of Olin and walking around Olin. This will be an implementation and theory based project. We plan to get real world measurements of Olin to keep the project grounded. In essence we are hoping to make a “Google Maps” for Olin’s campus. We will start with some research into how routing algorithms like Google maps/GPS work to understand how this problem is approached and simplified.
