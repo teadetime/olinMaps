@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import PIL
+from haversine import haversine, Unit
 
 
 def build_graph(vis=False):
@@ -56,7 +56,11 @@ def build_graph(vis=False):
 
 
 if __name__ == "__main__":
-    # imgplot = plt.imshow(img)
-    # plt.show()
-    graph = build_graph(True)
-    # astar(G, 1, 3)
+    # graph = build_graph(True)
+
+    AC1 = (42.29321996991126, -71.26459288853798)  #  AC 1
+    AC2 = (42.29363418081095, -71.26422001841294)  # AC 2
+
+    dist = haversine(AC1, AC2, unit='ft')
+
+    print(dist)
