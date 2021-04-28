@@ -56,6 +56,22 @@ def build_graph(vis=False):
     return G
 
 
+def add_dist_edge(graph, node1, node2, unit = "ft"):
+    """
+    Creates edges for nodes on the graph based on the distance between lat and long (haversine function)
+
+    :param graph: networkx graph
+    :param node1: Name of node
+    :param node2:
+    :param unit: unit for haversine calc
+    """
+
+    coords1 = graph.nodes[node1].coords
+    coords2 = graph.nodes[node2].coords
+
+    graph.add_edge(node1, node2, weight = haversine(coords1,coords2, unit=unit))
+
+
 if __name__ == "__main__":
     graph = build_graph(True)
 
