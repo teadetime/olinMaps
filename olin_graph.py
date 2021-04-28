@@ -66,8 +66,9 @@ def add_dist_edge(graph, node1, node2, unit = "ft"):
     :param unit: unit for haversine calc
     """
 
-    coords1 = graph.nodes[node1].coords
-    coords2 = graph.nodes[node2].coords
+    coords1 = graph.nodes()[node1]["coords"]
+    coords2 = graph.nodes()[node2]["coords"]
+
 
     graph.add_edge(node1, node2, weight = haversine(coords1,coords2, unit=unit))
 
