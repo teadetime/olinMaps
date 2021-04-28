@@ -3,18 +3,19 @@ import matplotlib.pyplot as plt
 import math
 from queue import PriorityQueue
 import copy as cp
+from haversine import haversine, Unit
 
 def build_graph(vis=False):
     G = nx.Graph()
-    G.add_node(1, pos = (0,0))
-    G.add_node(2, pos = (0,2))
-    G.add_node(3, pos = (1,2))
-    G.add_node(4, pos = (-2,0))
+    G.add_node("1", pos = (0,0))
+    G.add_node("2", pos = (0,2))
+    G.add_node("3", pos = (1,2))
+    G.add_node("4", pos = (-2,0))
     
-    G.add_edge(1,2, weight=2)
-    G.add_edge(2,3, weight=1)
-    G.add_edge(3,4, weight=5)
-    G.add_edge(1,4, weight=2)
+    G.add_edge("1","2", weight=2)
+    G.add_edge("2","3", weight=1)
+    G.add_edge("3","4", weight=5)
+    G.add_edge("1","4", weight=2)
 
     if vis:
         #plt.subplot(121)
@@ -94,7 +95,13 @@ def heuristic(g, cur_node, end_node):
     end_pos = g.nodes()[end_node]["pos"]
     dx = abs(cur_pos[0]-end_pos[0])
     dy = abs(cur_pos[1]-end_pos[1])
-    return (dx+dy)
+    dist = math.sqrt(dx*dx+dy*dy)
+
+    #cur_pos = g.nodes()[cur_node]["coords"]
+    #end_pos = g.nodes()[end_node]["coords"]
+    ## Use coordinates to calulate distance
+    #dist = haversine(cur_pos, end_pos, unit='ft')
+    return dist
 
 
 def plot_video(G, run_data):
@@ -141,6 +148,6 @@ def route_find():
 
 if __name__ == "__main__":
     graph = build_graph(False)
-    ret = astar(graph, 1, 3)
+    ret = astar(graph, "1", "3")
     print(ret[0])
     print(ret[1])
