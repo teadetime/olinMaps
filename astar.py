@@ -5,6 +5,8 @@ import math
 from queue import PriorityQueue
 import copy as cp
 from haversine import haversine, Unit
+import csv
+
 
 def build_graph(vis=False):
     G = nx.Graph()
@@ -157,7 +159,7 @@ def add_dist_edge(graph, node1, node2, unit = "ft"):
 
     graph.add_edge(node1, node2, weight = round(haversine(coords1,coords2, unit=unit),1))
     
-def build_graph(vis=False):
+def build_graph(vis=False, csv_loc='node_connections.csv'):
     G = nx.Graph()
     G.add_node("AC 1",    pos=(324, 403),  coords = (42.29321996991126, -71.26459288853798))  #  AC 1
     G.add_node("AC 2",    pos=(456, 240),  coords = (42.29363418081095, -71.26422001841294))  # AC 2
@@ -188,12 +190,25 @@ def build_graph(vis=False):
     G.add_node("Park 2",  pos=(1198, 612), coords = (42.29266880578926, -71.26171318420484))  # parking lot B
 
 
-    add_dist_edge(G, "AC 1", "AC 2")
-    add_dist_edge(G, "Park 1", "AC 1")
-    add_dist_edge(G, "AC 2", "AC 4")
-    add_dist_edge(G, "AC 2", "AC 3")
-    add_dist_edge(G, "AC 4", "LPB")
-    add_dist_edge(G, "Park 1", "LPB")
+    with open(csv_loc, mode='r') as csv_file:
+        edge_counter = set()
+        csv_reader = csv.reader(csv_file)
+        first_row = True
+        for row in list(csv_reader):
+            if first_row:
+                first_row = False
+                continue
+            #print(row)
+            cur_node = row[0]
+            for con_node in row[1:]:
+                con_node = con_node.strip()
+                if con_node:
+                    add_dist_edge(G, cur_node, con_node)
+                    edge_counter.add( tuple(sorted([cur_node, con_node])) )
+
+        print(f'Added {len(edge_counter)} Unique edges to the graph from {csv_loc}')
+
+
     if vis:
         node_sizes = []
         for i in range(27):
