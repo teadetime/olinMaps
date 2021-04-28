@@ -7,28 +7,6 @@ import copy as cp
 from haversine import haversine, Unit
 import csv
 
-
-def build_graph(vis=False):
-    G = nx.Graph()
-    G.add_node("1", pos = (0,0))
-    G.add_node("2", pos = (0,2))
-    G.add_node("3", pos = (1,2))
-    G.add_node("4", pos = (-2,0))
-    
-    G.add_edge("1","2", weight=2)
-    G.add_edge("2","3", weight=1)
-    G.add_edge("3","4", weight=5)
-    G.add_edge("1","4", weight=2)
-
-    if vis:
-        #plt.subplot(121)
-        pos= nx.get_node_attributes(G,'pos')#nx.spring_layout(G) # pos = nx.nx_agraph.graphviz_layout(G)
-        nx.draw_networkx(G,pos)
-        labels = nx.get_edge_attributes(G,'weight')
-        nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-        plt.show()
-    return G
-
 def astar(G, start_node, end_node):
     """
     Output:
@@ -159,8 +137,11 @@ def add_dist_edge(graph, node1, node2, unit = "ft"):
 
     graph.add_edge(node1, node2, weight = round(haversine(coords1,coords2, unit=unit),1))
     
-def build_graph(vis=False, csv_loc='node_connections.csv'):
-    G = nx.Graph()
+def build_graph(vis=False, csv_loc='node_connections.csv', directed=False):
+    if directed:
+        G = nx.DiGraph()
+    else:
+        G = nx.Graph()
     G.add_node("AC 1",    pos=(324, 403),  coords = (42.29321996991126, -71.26459288853798))  #  AC 1
     G.add_node("AC 2",    pos=(456, 240),  coords = (42.29363418081095, -71.26422001841294))  # AC 2
     G.add_node("AC 3",    pos=(599, 149),  coords = (42.29386690104804, -71.2637380411814))   # AC 3
@@ -203,8 +184,20 @@ def build_graph(vis=False, csv_loc='node_connections.csv'):
             for con_node in row[1:]:
                 con_node = con_node.strip()
                 if con_node:
-                    add_dist_edge(G, cur_node, con_node)
-                    edge_counter.add( tuple(sorted([cur_node, con_node])) )
+                    if G.has_node(cur_node) and G.has_node(con_node):
+                        add_dist_edge(G, cur_node, con_node)
+                        if directed:
+                            edge_tuple = (cur_node, con_node)
+                        else:
+                            edge_tuple = tuple(sorted([cur_node, con_node]))
+                        edge_counter.add(edge_tuple)
+                    else:
+                        # The nodes in the CSV ARENT in THE graph!!
+                        if G.has_node(cur_node):
+                            print(f"{con_node} is not in the networkx graph!")
+                        else:
+                            print(f"{cur_node} is not in the networkx graph!")
+
 
         print(f'Added {len(edge_counter)} Unique edges to the graph from {csv_loc}')
 
@@ -223,14 +216,26 @@ def build_graph(vis=False, csv_loc='node_connections.csv'):
         plt.show()
     return G
 
+def ordered_route(G, ordered_route):
+    total_path = [ordered_route[0]]
+    total_run_data = []
+    for i in range(0,len(ordered_route)-1):
+        print(f"Travelling from {ordered_route[i]} to {ordered_route[i+1]} ")
+        astar_res = astar(G, ordered_route[i], ordered_route[i+1])
+        total_path.extend(astar_res[0][1:])
+        total_run_data.append(astar_res[1])
+    return (total_path, total_run_data )
+
 if __name__ == "__main__":
     # graph = build_graph(False)
     # ret = astar(graph, "1", "3")
     # print(ret[0])
     # print(ret[1])
 
-    g = build_graph(True)
+    g = build_graph(vis=False, directed=False)
 
-    ret = astar(g, "Park 1", "AC 4")
-    print(ret[0])
-    print(ret[1])
+    # ret = astar(g, "Park 1", "AC 4")
+    # print(ret[0])
+    # print(ret[1])
+    ret = ordered_route(g, ["AC 1", "LPB", "AC 4"])
+    print(ret)
