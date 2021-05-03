@@ -227,6 +227,8 @@ def ordered_route(G, ordered_route):
     for i in range(0,len(ordered_route)-1):
         print(f"Travelling from {ordered_route[i]} to {ordered_route[i+1]} ")
         astar_res = astar(G, ordered_route[i], ordered_route[i+1])
+        if not astar_res:
+            return "These nodes cannot be connected!" 
         total_path.extend(astar_res[0][1:])
         total_run_data.append(astar_res[1])
     return (total_path, total_run_data )
