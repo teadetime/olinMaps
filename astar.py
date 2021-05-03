@@ -173,7 +173,9 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
     with open(csv_path_nodes, newline='') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         for row in csv_reader:
-            if len(row) > 2:
+            if len(row) > 3:
+                G.add_node(row[0], coords=(float(row[1]), float(row[2])), pos=(int(row[3]), int(row[4])))
+            elif len(row) > 2:
                 G.add_node(row[0], coords=(float(row[1]), float(row[2])))
 
     with open(csv_loc, mode='r') as csv_file:
