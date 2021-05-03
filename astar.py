@@ -137,7 +137,7 @@ def add_dist_edge(graph, node1, node2, unit = "ft"):
 
     graph.add_edge(node1, node2, weight = round(haversine(coords1,coords2, unit=unit),1))
     
-def build_graph(vis=False, csv_loc='node_connections.csv', directed=False):
+def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path_nodes.csv',  directed=False):
     if directed:
         G = nx.DiGraph()
     else:
@@ -170,6 +170,11 @@ def build_graph(vis=False, csv_loc='node_connections.csv', directed=False):
     G.add_node("TC",      pos=(366, 602),  coords = (42.29263151086271, -71.26455375403833))  # traffic circle
     G.add_node("Park 2",  pos=(1198, 612), coords = (42.29266880578926, -71.26171318420484))  # parking lot B
 
+    with open(csv_path_nodes, newline='') as csvfile:
+        csv_reader = csv.reader(csvfile, delimiter=',')
+        for row in csv_reader:
+            if len(row) > 2:
+                G.add_node(row[0], coords=(float(row[1]), float(row[2])))
 
     with open(csv_loc, mode='r') as csv_file:
         edge_counter = set()
