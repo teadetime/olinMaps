@@ -173,7 +173,9 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
     with open(csv_path_nodes, newline='') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         for row in csv_reader:
-            if len(row) > 2:
+            if len(row) > 3:
+                G.add_node(row[0], coords=(float(row[1]), float(row[2])), pos=(int(row[3]), int(row[4])))
+            elif len(row) > 2:
                 G.add_node(row[0], coords=(float(row[1]), float(row[2])))
 
     with open(csv_loc, mode='r') as csv_file:
@@ -227,6 +229,8 @@ def ordered_route(G, ordered_route):
     for i in range(0,len(ordered_route)-1):
         print(f"Travelling from {ordered_route[i]} to {ordered_route[i+1]} ")
         astar_res = astar(G, ordered_route[i], ordered_route[i+1])
+        if not astar_res:
+            return "These nodes cannot be connected!" 
         total_path.extend(astar_res[0][1:])
         total_run_data.append(astar_res[1])
     return (total_path, total_run_data )
