@@ -1,19 +1,28 @@
-## Intro/Motivation
-This project seeks to explore how sites like Google Maps approach path planning between multiple points. This problem is interesting because it is not viable to test all permutations of a route once a map(graph) reaches a certain size. This problem is worth exploring as it leads to more complex and important problems like route-optimization. Path planning is also an approachable problem since there are several algorithms (namely Dijkstras and A*) that are directly applicable and well documented already.
-This project seeks to implement a quickest-route finder for at a small scale: our college campus. This gives us easy access to data as we can measure things in person and we can validate paths that we generate by walking them ourselves.
+## Introduction
+This project seeks to explore how we can implement path planning between multiple points, in the way that sites such as Google Maps are able to do. This problem is interesting because it is not viable to test all permutations of a route once a map(graph) reaches a certain size. This problem is worth exploring as it leads to more complex and important problems like route-optimization. Path planning is also an approachable problem since there are several algorithms (namely Dijkstras and A*) that are directly applicable and well documented already.
+This project seeks to implement a quickest-route finder for at a small scale: our college campus. This gives us easy access to data as we are able to validate the paths we generate by walking them ourselves.
 
 
 ## Design 
 This project can be broken down into three different parts 
 - Creating a graph representation of Olin
-- Creating an A* algorithm using said graph
+- Creating an A* implementation that can use our graph
 - Visualize the algorithm and the process
 
 
-#### Graph Creation
-Given our previous experience with the networkx python package. [networkx](https://networkx.org/) this package takes care of much of the inner workings of a graph for us. We found that it would actually be easiest to use latitude and longitude as the positions of the elements on the map. With this data it is trivial to calculate the distance between nodes. For our implementation we decided it would be easiest to start with a flat map so that we didn’t have to account for elevation change in things like stairways. elevators etc.
+#### Olin Graph Creation
+
+To create the graph, we first figured out relevant locations at Olin to be valid locations for navigation to and from. These points are the principal nodes of our graph. We decided to also find intermediary nodes (such as sidewalk intersections) that would make it easy to connect these principal nodes, mapping our graph closely to the physical layout of Olin's campus.
+ 
+We took advantage of Google Maps satellite and location data to find longitude and latitude positions for our elements on the map, and use these to calculate the distance/weight between the nodes by using a [haversine function](https://pypi.org/project/haversine/). Using this distance calculation assumes a flat map (does not account for elevation change in things like stairways. elevators etc), but it is a good estimation for the majority of these paths.
+
+
+We decided to use the [networkx python package](https://networkx.org/) data structures to store the graph.
+
+
 #### A* Algorithm
-The A* algorithm intelligently explores the search space. This is achieved by the use of a heuristic. This heuristic guides the algorithm’s exploration towards the optimal solution. Most common A* implementations for spatial mapping use a heuristic that is the shortest distance to the end target. A more complicated heuristic is needed when navigating a more complex map (ie elevators stairs etc) 
+The [A* algorithm](https://en.wikipedia.org/wiki/A*_search_algorithm) intelligently explores the search space by modifying [Djikstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) with the use of a heuristic. This heuristic guides the algorithm’s exploration towards the optimal solution more quickly. Most common A* implementations for spatial mapping use a heuristic that is the shortest distance to the end target. A more complicated heuristic is needed when navigating a more complex map (ie elevators stairs etc). Our implemented heuristic is the distance between the nodes using the haversine function.
+
 We hope to expand this project into a more complicated map environment such that it could find optimal routes with things like stairwells and numbers of doors accounted for.
 The page HERE FINSD SOURCE is loosely what our implementation is based on
 
