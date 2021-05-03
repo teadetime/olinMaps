@@ -1,37 +1,42 @@
-## Welcome to GitHub Pages
+## Intro/Motivation
+This project seeks to explore how sites like Google Maps approach path planning between multiple points. This problem is interesting because it is not viable to test all permutations of a route once a map(graph) reaches a certain size. This problem is worth exploring as it leads to more complex and important problems like route-optimization. Path planning is also an approachable problem since there are several algorithms (namely Dijkstras and A*) that are directly applicable and well documented already.
+This project seeks to implement a quickest-route finder for at a small scale: our college campus. This gives us easy access to data as we can measure things in person and we can validate paths that we generate by walking them ourselves.
 
-You can use the [editor on GitHub](https://github.com/teadetime/olinMaps/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Design 
+This project can be broken down into three different parts 
+- Creating a graph representation of Olin
+- Creating an A* algorithm using said graph
+- Visualize the algorithm and the process
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+#### Graph Creation
+Given our previous experience with the networkx python package. [networkx](https://networkx.org/) this package takes care of much of the inner workings of a graph for us. We found that it would actually be easiest to use latitude and longitude as the positions of the elements on the map. With this data it is trivial to calculate the distance between nodes. For our implementation we decided it would be easiest to start with a flat map so that we didn’t have to account for elevation change in things like stairways. elevators etc.
+#### A* Algorithm
+The A* algorithm intelligently explores the search space. This is achieved by the use of a heuristic. This heuristic guides the algorithm’s exploration towards the optimal solution. Most common A* implementations for spatial mapping use a heuristic that is the shortest distance to the end target. A more complicated heuristic is needed when navigating a more complex map (ie elevators stairs etc) 
+We hope to expand this project into a more complicated map environment such that it could find optimal routes with things like stairwells and numbers of doors accounted for.
+The page HERE FINSD SOURCE is loosely what our implementation is based on
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+#### Visualize the Algorithm
+Creating good visualizations for our route-planning algorithm was also critical. Since our map is structured nicely with latitude and longitude coordinates and we are only dealing in 2d, we have decided to map our coordinates onto an aerial shot of the Olin Campus from Google Maps. This also lends itself to future optimization in which we could interface with google’s api’s to build our own version of maps for a given space. 
 
-- Bulleted
-- List
+We have developed our algorithm such that output shows how the final path was chosen so that someone not familiar with it can understand what was  happening.
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+## Analysis
+Below is our final implementation. INSERT GIUF HERE![]()
+This shows the best path from points A TO B along with a distance of ____. This is the shortest way between these two nodes. 
+A more complex path such as ____ is shown below
+INSET HERE
 
-[Link](url) and ![Image](src)
-```
+Our algorithm reaches it’s limitation when presented with a route optimization problem that lists destinations without an associated order. However, if the order of destinations is known our algorithm can successfully find an optimal path. INESRT EXAMPLE OF MULTI STOP ROUTE in which the order is known.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+To illustrate how this algorithm is limited by the ordering of the stops, here is the same path with a different input order.
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/teadetime/olinMaps/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Future Goals/Direction of work
+- Explorer other methods of map storage since maps are rarely made up of discrete points. (maybe storing obstacles would be better for a sparse environment)
+- 3d building path planning (For very large buildings, what is the quickest way to get from point a to b). This could have safety implications.
+- Compare different methods of doing route optimization/ordering of stops. For small problems, it is feasible to check all possibilities but this changes once there is a large map and many stops.
+- What other data should be stored as operations are carried out in order to speed up other route findings. Does storing paths for main nodes or frequently 
