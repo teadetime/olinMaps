@@ -56,7 +56,7 @@ def astar(G, start_node, end_node):
             if new_dist < node_dict[other_node]:
                 node_dict[other_node] = new_dist
                 prev_map[other_node] = node
-                p_queue.put((new_dist + heuristic(G,start_node, end_node), other_node))
+                p_queue.put((new_dist + heuristic(G,other_node, end_node), other_node))
         
     if end_node not in prev_map:
         return []
