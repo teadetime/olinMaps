@@ -61,6 +61,8 @@ Since our map is structured using with latitude and longitude coordinates, which
 ## Analysis
 Below is a test case for our final implementation as a walk-through.
 
+If you would like to test it out yourself, click [here](https://mybinder.org/v2/gh/teadetime/olinMaps/HEAD?filepath=olinMaps_notebook.ipynb).
+
 <!-- See link to jupyter notebook or whatever if we get it running here -->
 
 **INSERT GIUF HERE![]()**
