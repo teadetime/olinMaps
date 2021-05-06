@@ -85,26 +85,6 @@ def heuristic(g, cur_node, end_node):
     return dist
 
 
-def plot_video(G, run_data):
-    ## Do setup of stuff here
-    frame_num = 0
-    ## Loop through each state of ASTAR
-    for frame in run_data:
-        # Process this into a mtaplotlib call
-        build_matplotlib(G, run_data, frame_num)
-        frame_num += 1
-
-    # Call ffmpeg to make a video
-    # import os
-    # import imageio
-
-    # png_dir = '../animation/png'
-    # images = []
-    # for file_name in sorted(os.listdir(png_dir)):
-    #     if file_name.endswith('.png'):
-    #         file_path = os.path.join(png_dir, file_name)
-    #         images.append(imageio.imread(file_path))
-    # imageio.mimsave('../animation/gif/movie.gif', images)
 
 def build_matplotlib(G, astar_data, frame_num):
     visited = astar_data[0] # This is a set of visited nodes
@@ -121,6 +101,28 @@ def build_matplotlib(G, astar_data, frame_num):
         #plot operation
     
     plt.savefig("images/file%02d.png" % frame_num)
+
+def plot_video(G, run_data):
+    ## Do setup of stuff here
+    frame_num = 0
+    ## Loop through each state of ASTAR
+    for frame in run_data:
+        # Process this into a mtaplotlib call
+        build_matplotlib(G, run_data, frame_num)
+        frame_num += 1
+
+    # Call ffmpeg to make a video
+    import os
+    import imageio
+
+    png_dir = '../animation/png'
+    images = []
+    for file_name in sorted(os.listdir(png_dir)):
+        if file_name.endswith('.png'):
+            file_path = os.path.join(png_dir, file_name)
+            images.append(imageio.imread(file_path))
+    imageio.mimsave('../animation/gif/movie.gif', images)
+
 
 def add_dist_edge(graph, node1, node2, unit = "ft"):
     """
@@ -206,7 +208,8 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
         print(f'Added {len(edge_counter)} Unique edges to the graph from {csv_loc}')
         return G
 
-def visualize_graph(G, node_list, start_node, end_node):
+def visualize_graph(G, node_list, start_node, end_node, save_fig=False, 
+                    fig_name=None, new_edges=None, color="blue"):
     """
     Output: Networkx graph of shortest path
     Displays the shortest path graph using matplotlib
@@ -224,8 +227,8 @@ def visualize_graph(G, node_list, start_node, end_node):
                     node_sizes.append(0)
                     node_labels[str(i)] = ""
                 else:
-                    node_sizes.append(300)
-                    node_labels[str(i)] = str(i)
+                    node_sizes.append(0)
+                    node_labels[str(i)] = ""
             else:
                 G.remove_node(i)
         else:
@@ -234,13 +237,14 @@ def visualize_graph(G, node_list, start_node, end_node):
 
     plt.figure(figsize=(10, 8))
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color='red', font_size=12)#, font_color='white')
+    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color=color, font_size=12)#, font_color='white')
     # labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edges(G, pos, width=3, edge_color="blue")
+    nx.draw_networkx_edges(G, pos, width=3, edge_color=color)
     data = mpimg.imread('./images/olin_sat.png')
     plt.imshow(data)
-    plt.show()
-    return G
+    # plt.show()
+    if save_fig:
+        plt.savefig(fig_name)
 
 def ordered_route(G, ordered_route):
     total_path = [ordered_route[0]]
@@ -252,7 +256,7 @@ def ordered_route(G, ordered_route):
             return "These nodes cannot be connected!" 
         total_path.extend(astar_res[0][1:])
         total_run_data.append(astar_res[1])
-    return (total_path, total_run_data )
+    return (total_path, total_run_data)
 
 if __name__ == "__main__":
     # graph = build_graph(False)
