@@ -30,23 +30,22 @@ def astar(G, start_node, end_node):
         node_dict[node] = best_dist
             
     run_list = []
-    # Initilize the starting node into visited
-    p_queue = PriorityQueue()
+    p_queue = PriorityQueue() 
     visited = set()
     prev_map = dict()
+    # Initilize the starting node into visited
     p_queue.put((heuristic(G,start_node, end_node), start_node))
 
     while not p_queue.empty():
-        ## Addd stuff into plotting dict
+        # Add stuff into plotting dict
         run_list.append(((cp.copy(visited)), cp.copy([b for (a,b) in p_queue.queue])))
-
         short = p_queue.get()
         node = short[1]
         node_pri = short[0]
         if node == end_node: break
         visited.add(node)
-        dist_to_node = node_dict[node] ## NOT SURE THIS IS RIGHT
-        adj_list = G.adj[node]
+        dist_to_node = node_dict[node] # NOT SURE THIS IS RIGHT
+        adj_list = G.adj[node]  # get adjacent nodes
 
         for other_node in adj_list:
             if other_node in visited: continue
@@ -83,8 +82,6 @@ def heuristic(g, cur_node, end_node):
     # Use coordinates to calulate distance
     dist = haversine(cur_pos, end_pos, unit='ft')
     return dist
-
-
 
 def build_matplotlib(G, astar_data, frame_num):
     visited = astar_data[0] # This is a set of visited nodes
@@ -140,6 +137,11 @@ def add_dist_edge(graph, node1, node2, unit = "ft"):
     graph.add_edge(node1, node2, weight = round(haversine(coords1,coords2, unit=unit),1))
     
 def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path_nodes.csv', directed=False):
+    """
+    Creates a networkx graph G of useful locations at Olin with pixel and 
+    longitude/latitude coordinates. The pathway attribute indicates whether or 
+    not it should be displayed to the user during visualization.
+    """
     if directed:
         G = nx.DiGraph()
     else:
@@ -211,40 +213,51 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
 def visualize_graph(G, node_list, start_node, end_node, save_fig=False, 
                     fig_name=None, new_edges=None, color="blue"):
     """
-    Output: Networkx graph of shortest path
-    Displays the shortest path graph using matplotlib
+    Displays the graph of nodes in node_list using Networkx and Matplotlib. If 
+    save_fig=True, it does not display the graph but instead saves the entire 
+    figure as a png.
     """
-    all_nodes = list(G.nodes())
+    all_olin_nodes = list(G.nodes())
     node_sizes = []
     node_labels = {}
+    # pixel coordinates of node on satellite image of Olin's campus
     pos = nx.get_node_attributes(G, 'pos')
     pathway = nx.get_node_attributes(G, 'pathway')
-    for i in all_nodes:
+    for i in all_olin_nodes:
         if i != start_node and i != end_node:
             if i in node_list:
-                node_pos = pos[i]
+                # hide pathway nodes from display
                 if pathway[i]:
                     node_sizes.append(0)
                     node_labels[str(i)] = ""
                 else:
+                    # change to .append(x > 0) to display non-pathway nodes
                     node_sizes.append(0)
+                    # change "" to str(i) to display node names
                     node_labels[str(i)] = ""
             else:
+                # remove unvisited nodes from display
                 G.remove_node(i)
         else:
+            # display start and end nodes and labels
             node_sizes.append(300)
             node_labels[str(i)] = str(i)
 
     plt.figure(figsize=(10, 8))
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color=color, font_size=12)#, font_color='white')
+    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color=color, font_size=12)
+    # display edge lengths in feet
     # labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edges(G, pos, width=3, edge_color=color)
+    # display satellite image of Olin's campus as background
     data = mpimg.imread('./images/olin_sat.png')
     plt.imshow(data)
-    # plt.show()
+    # save the figure to path given by fig_name parameter if save_fig=True
     if save_fig:
         plt.savefig(fig_name)
+    # display figure in pop-up
+    else:
+        plt.show()
 
 def ordered_route(G, ordered_route):
     total_path = [ordered_route[0]]
@@ -259,7 +272,6 @@ def ordered_route(G, ordered_route):
     return (total_path, total_run_data)
 
 if __name__ == "__main__":
-    # graph = build_graph(False)
     # ret = astar(graph, "1", "3")
     # print(ret[0])
     # print(ret[1])
@@ -270,8 +282,3 @@ if __name__ == "__main__":
     End = "WH 1"
     A = astar(g, Start, End)
     visualize_graph(g, A[0], Start, End)
-    # ret = astar(g, "Park 1", "AC 4")
-    # print(ret[0])
-    # print(ret[1])
-    # ret = ordered_route(g, ["AC 1", "LPB", "AC 4"])
-    # print(ret)
