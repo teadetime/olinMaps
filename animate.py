@@ -33,7 +33,7 @@ def get_figs(start_node, end_node):
         remove(img)
 
     # compile the animation from images list
-    imageio.mimsave('./images/animation.gif', images, duration=.6)
+    imageio.mimsave(f"./images/{start_node}_{end_node}.gif", images, duration=.6)
 
 
 get_figs("AC 1", "EH 1")
