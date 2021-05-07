@@ -274,9 +274,9 @@ def visualize_graph_inter(G):
     nodes = nx.draw_networkx_nodes(G, pos, node_size = 100)
     nodes.set_picker(5)
     nx.draw_networkx_edges(G, pos)
-    nx.draw_networkx_labels(G, pos)
-    labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+    nx.draw_networkx_labels(G, pos, font_size=8)
+    #labels = nx.get_edge_attributes(G,'weight')
+    #nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     data = mpimg.imread('./images/olin_sat.png')
     plt.imshow(data)
 
