@@ -228,13 +228,13 @@ def visualize_graph(G, node_list, start_node, end_node, save_fig=False,
             if i in node_list:
                 # hide pathway nodes from display
                 if pathway[i]:
-                    node_sizes.append(0)
+                    node_sizes.append(40)
                     node_labels[str(i)] = ""
                 else:
                     # change to .append(x > 0) to display non-pathway nodes
-                    node_sizes.append(0)
+                    node_sizes.append(200)
                     # change "" to str(i) to display node names
-                    node_labels[str(i)] = ""
+                    node_labels[str(i)] = ""#str(i)
             else:
                 # remove unvisited nodes from display
                 G.remove_node(i)
