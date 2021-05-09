@@ -59,7 +59,7 @@ In the figures below you can see more examples of our algorithm planning routes 
 ![AC to WH Animation](/images/AC&#32;1_WH&#32;1.gif)
 > Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
 
-![EH to WH Animation](/images/AC&#32;1_WH&#32;1.gif)
+![EH to WH Animation](/images/EH&#32;3_CC&#32;3.gif)
 > Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
 
 ### The A* Heuristic
