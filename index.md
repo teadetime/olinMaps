@@ -56,10 +56,10 @@ Below is an animation generated using our path planning program. It shows the be
 In the figures below you can see more examples of our algorithm planning routes between points. Based on our own experiences walking around campus, the routes chosen tend to be the most efficient way to get between the two points.
 
 
-![AC to WH Animation](/images/AC&#32;1_WH&#32;1.gif)
+![AC to WH Animation](/images/AC1_WH1.gif)
 > Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
 
-![EH to WH Animation](/images/EH&#32;3_CC&#32;3.gif)
+![EH to WH Animation](/images/EH3_CC3.gif)
 > Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
 
 ### The A* Heuristic
