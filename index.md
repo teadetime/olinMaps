@@ -23,7 +23,7 @@ Using the Google Maps pins and their longitude and latitude data, we calculated 
 We used the [Networkx](https://networkx.org/) Python package, a ready-to-use graph generation framework, to create and manipulate this graph. 
 
 ![Campus_nodes](/images/all_nodes2.png)
-> Figure 1: A visual representaiton of the entire graph overlayed on an image of Olin's campus
+> Figure 1: A visual representation of the entire graph overlayed on an image of Olin's campus
 
 ### A* Algorithm
 Our implementation is loosely inspired by Google Maps’ use of Dijkstra’s algorithm as its path planning solution, which is detailed in [this article](https://www.vice.com/en/article/4x3pp9/the-simple-elegant-algorithm-that-makes-google-maps-possible). The algorithm used in our implementation, A\*, is an adaptation of Dijkstra’s algorithm that uses a heuristic to improve efficiency by selectively exploring possible paths according to the distance each path improves toward the destination. 
