@@ -22,7 +22,7 @@ Using the Google Maps pins and their longitude and latitude data, we calculated 
 
 We used the [Networkx](https://networkx.org/) Python package, a ready-to-use graph generation framework, to create and manipulate this graph. 
 
-![Campus_nodes](/images/all_nodes2.png)
+![Campus_nodes](/all_nodes2.png)
 > Figure 1: A visual representaiton of the entire graph overlayed on an image of Olin's campus
 
 ### A* Algorithm
