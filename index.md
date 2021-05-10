@@ -22,16 +22,16 @@ Using the Google Maps pins and their longitude and latitude data, we calculated 
 
 We used the [Networkx](https://networkx.org/) Python package, a ready-to-use graph generation framework, to create and manipulate this graph. 
 
-![Campus_nodes](/all_nodes2.png)
+![Campus_nodes](all_nodes2.png)
 > Figure 1: A visual representaiton of the entire graph overlayed on an image of Olin's campus
 
 ### A* Algorithm
 Our implementation is loosely inspired by Google Maps’ use of Dijkstra’s algorithm as its path planning solution, which is detailed in [this article](https://www.vice.com/en/article/4x3pp9/the-simple-elegant-algorithm-that-makes-google-maps-possible). The algorithm used in our implementation, A\*, is an adaptation of Dijkstra’s algorithm that uses a heuristic to improve efficiency by selectively exploring possible paths according to the distance each path improves toward the destination. 
 The heuristic we used for the A* algorithm is the Euclidean distance between the current node and the destination node, which is calculated using each node’s longitude and latitude coordinate pair in. This heuristic acts as a metric for the optimality of a potential path. We used parts of the code from Homework 9 in our implementation of A*.
 
-![ASTAR Pseudocode](/astar_pseudo.png)
+![ASTAR Pseudocode](/images/astar_pseudo.png)
 
-> A* pseudocode
+> Figure 2: A* pseudocode
 
 The above pseudocode (credit to DSA Teaching team) was used to create our implementation of A*. The algorithm has two main sections: the setup section and the searching section. In the setup section, we initialize various variables used by the searching section of this algorithm. These include sets to contain the shortest distance to each node and nodes that have already been visited. We also initialize a [PriorityQueue](https://docs.python.org/3/library/heapq.html) that is used to prioritize nodes that will get us closer to our destination while exploring the graph. 
 
@@ -45,7 +45,7 @@ Creating a visualization and simple interface for our path planning program was 
 The animated aspect of the visualization uses the user’s start and end location selection as input for the A* function along with the Networkx graph containing the named coordinate pairs. The A* function returns a list of nodes that comprise the shortest path solution and a list of sets that contain the nodes explored during each step of the route-optimization process. The nodes in each set are then plotted on the satellite image of Olin using Matplotlib and Networkx’s draw function and saved. Afterward, the shortest path is plotted and saved. The figures are then stitched together sequentially into a GIF using the ImageIO Python module.
 
 ![Example route](/images/EH1_AC4.gif)
-> Figure 2: Example route finding animation from East Hall to the AC
+> Figure 3: Example route finding animation from East Hall to the AC
  
 ## Analysis
 If you would like to test the code out yourself, click [here](https://mybinder.org/v2/gh/teadetime/olinMaps/HEAD?filepath=olinMaps_notebook.ipynb).
@@ -53,16 +53,16 @@ If you would like to test the code out yourself, click [here](https://mybinder.o
 Below is an animation generated using our path planning program. It shows the best path from the door of the AC nearest the traffic circle to the main entrance to East Hall.
 
 ![AC to EH Animation](/images/animation.gif)
-> Figure 3: Shortest path between the West door of the AC to the main entrance to East Hall
+> Figure 4: Shortest path between the West door of the AC to the main entrance to East Hall
 
 In the figures below you can see more examples of our algorithm planning routes between points. Based on our own experiences walking around campus, the routes chosen tend to be the most efficient way to get between the two points.
 
 
 ![AC to WH Animation](/images/AC1_WH1.gif)
-> Figure 4: Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
+> Figure 5: Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
 
 ![EH to CC Animation](/images/EH3_CC3.gif)
-> Figure 5: Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
+> Figure 6: Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
 
 ### The A* Heuristic
 Our implementation employed A*, a heuristic algorithm, to determine the optimal path between two points. For a heuristic, we used the Haversine Python package to compute the Euclidean distance between the longitude and latitude coordinate pairs of the current node and the destination node. The Euclidean distance between two points is the shortest distance “as the crow flies,” meaning that even if the current node is adjacent to the destination node, the heuristic distance is equal to the actual distance travelled from the current node to the destination node. 
