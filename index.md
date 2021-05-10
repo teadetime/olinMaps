@@ -7,7 +7,6 @@ Once a map reaches a certain size, it is not viable to test all possible routes 
 To use the finished product in a Jupyter Notebook, click [here](https://mybinder.org/v2/gh/teadetime/olinMaps/HEAD?filepath=olinMaps_notebook.ipynb).
 
 
-
 ## Project Design
 This project is comprised of three main parts:
 1. A graphical representation of Olin
