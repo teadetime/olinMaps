@@ -4,11 +4,7 @@ import imageio
 from os import remove
 
 
-def call_vis(k, start_node, end_node, c, draw_color):
-    G=build_graph()
-    visualize_graph(G, k, start_node, end_node, save_fig=True, fig_name=c, color=draw_color)
-
-def get_figs(start_node, end_node):
+def animation(start_node, end_node):
     images = []
     # where to save image
     img="./images/ani/img.png"
@@ -18,9 +14,9 @@ def get_figs(start_node, end_node):
     explored = A[1]
 
     for i in explored:
-        # call the stupid function I made at some point just calling 
-        # visualize_graph, I forget why will correct later
-        call_vis(i[0], start_node, end_node, img, 'orange')
+        # plot the graph at each step in astar
+        G=build_graph()
+        visualize_graph(G, i[0], start_node, end_node, save_fig=True, fig_name=img, color='orange')
         # append the image to list of images to use in animation
         images.append(imageio.imread(img))
         # clean the image dir
@@ -28,12 +24,14 @@ def get_figs(start_node, end_node):
 
     # display final solution for twice as long as normal frame
     for i in range(2):
-        call_vis(A[0], start_node, end_node, img, 'red')
+        visualize_graph(G, A[0], start_node, end_node, save_fig=True, fig_name=img, color='red')
         images.append(imageio.imread(img))
         remove(img)
 
     # compile the animation from images list
     imageio.mimsave(f"./images/{start_node}_{end_node}.gif", images, duration=.6)
 
-
-get_figs("AC 1", "EH 1")
+if __name__ == "__main__":
+    Start = "AC 1"
+    End = "EH 1"
+    animation(Start, End)
