@@ -22,8 +22,8 @@ Using the Google Maps pins and their longitude and latitude data, we calculated 
 
 We used the [Networkx](https://networkx.org/) Python package, a ready-to-use graph generation framework, to create and manipulate this graph. 
 
-![Campus_nodes](/images/all_nodes.png)
-> Visual representaiton of our entire graph overlayed on campus
+![Campus_nodes](/images/all_nodes2.png)
+> Figure 1: A visual representaiton of the entire graph overlayed on an image of Olin's campus
 
 ### A* Algorithm
 Our implementation is loosely inspired by Google Maps’ use of Dijkstra’s algorithm as its path planning solution, which is detailed in [this article](https://www.vice.com/en/article/4x3pp9/the-simple-elegant-algorithm-that-makes-google-maps-possible). The algorithm used in our implementation, A\*, is an adaptation of Dijkstra’s algorithm that uses a heuristic to improve efficiency by selectively exploring possible paths according to the distance each path improves toward the destination. 
@@ -45,7 +45,7 @@ Creating a visualization and simple interface for our path planning program was 
 The animated aspect of the visualization uses the user’s start and end location selection as input for the A* function along with the Networkx graph containing the named coordinate pairs. The A* function returns a list of nodes that comprise the shortest path solution and a list of sets that contain the nodes explored during each step of the route-optimization process. The nodes in each set are then plotted on the satellite image of Olin using Matplotlib and Networkx’s draw function and saved. Afterward, the shortest path is plotted and saved. The figures are then stitched together sequentially into a GIF using the ImageIO Python module.
 
 ![Example route](/images/EH1_AC4.gif)
-> Example routefinding animation from East Hall to the AC
+> Figure 2: Example route finding animation from East Hall to the AC
  
 ## Analysis
 If you would like to test the code out yourself, click [here](https://mybinder.org/v2/gh/teadetime/olinMaps/HEAD?filepath=olinMaps_notebook.ipynb).
@@ -53,16 +53,16 @@ If you would like to test the code out yourself, click [here](https://mybinder.o
 Below is an animation generated using our path planning program. It shows the best path from the door of the AC nearest the traffic circle to the main entrance to East Hall.
 
 ![AC to EH Animation](/images/animation.gif)
-> Shortest path between the West door of the AC to the main entrance to East Hall
+> Figure 3: Shortest path between the West door of the AC to the main entrance to East Hall
 
 In the figures below you can see more examples of our algorithm planning routes between points. Based on our own experiences walking around campus, the routes chosen tend to be the most efficient way to get between the two points.
 
 
 ![AC to WH Animation](/images/AC1_WH1.gif)
-> Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
+> Figure 4: Shortest path from the West entrance to the Academic Center to the lower level of the Campus Center
 
 ![EH to CC Animation](/images/EH3_CC3.gif)
-> Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
+> Figure 5: Shortest path from the Lowest exit of East Hall to one of the Campus Center entrances
 
 ### The A* Heuristic
 Our implementation employed A*, a heuristic algorithm, to determine the optimal path between two points. For a heuristic, we used the Haversine Python package to compute the Euclidean distance between the longitude and latitude coordinate pairs of the current node and the destination node. The Euclidean distance between two points is the shortest distance “as the crow flies,” meaning that even if the current node is adjacent to the destination node, the heuristic distance is equal to the actual distance travelled from the current node to the destination node. 
@@ -81,6 +81,6 @@ One way we could improve the accuracy of our optimal route finder is by defining
 
 Another way we could improve our program is by using some form of stop ordering logic to calculate more optimal routes for multi-stop trips. Currently, the program handles multi-stop trips by running the A* algorithm on every pair of stops (meaning the first stop is used as the start node and the second as the end node, then the second stop used as the start node and the third as the end node, and so on) in the order they are entered. For smaller multi-stop problems, we might instead choose to find the route lengths of all possible stop orderings using the current method and determine the best route. For larger multi-stop problems, we could sort the stops into groups by location and then compute a fairly optimal route by using the solution described for smaller multi-stop problems on each group.
 
-We might further optimize our route finder computationally using caching. We could store the distances between frequently used nodes to avoid calculating the same distances repeatedly. We could also account for cases where one sub-path is consistently faster than others. For example, if the shortest path to AC 4 (see figure ___ for location key) is always through AC 2 except when starting from the LPB, we could include a condition that automatically chooses to access AC 4 via AC 2 unless the start node is the LPB, avoiding any excess distance calculations.
+We might further optimize our route finder computationally using caching. We could store the distances between frequently used nodes to avoid calculating the same distances repeatedly. We could also account for cases where one sub-path is consistently faster than others. For example, if the shortest path to AC 4 (see Figure 1 for location key) is always through AC 2 except when starting from the LPB, we could include a condition that automatically chooses to access AC 4 via AC 2 unless the start node is the LPB, avoiding any excess distance calculations.
 
 One way that we could expand upon this project is by incorporating elevation into our shortest path calculation. Using elevation in addition to horizontal distance to determine the most optimal path was one of our stretch goals, and might make our program more accurate when determining the shortest path between locations. This would also allow us to determine the shortest path between rooms on different floors in buildings, which would be useful when travelling between classes. Information like this could also be used to improve evacuation routes, resulting in a safer environment.
