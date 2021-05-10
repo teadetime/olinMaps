@@ -4,6 +4,8 @@ This project aims to implement a shortest path finder at a small scale: using th
 
 Once a map reaches a certain size, it is not viable to test all possible routes from a start point to an end point, so we utilize algorithms to reduce the search space. The field of path planning is well studied, with several algorithms - namely Dijkstra’s and A* - that are directly applicable and well documented that we can apply towards our problem. 
 
+To use the finished product in a Jupyter Notebook, click [here](https://mybinder.org/v2/gh/teadetime/olinMaps/HEAD?filepath=olinMaps_notebook.ipynb).
+
 
 
 ## Project Design
