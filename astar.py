@@ -148,7 +148,7 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
         G = nx.Graph()
     G.add_node("AC 1",    pos=(324, 403),  coords = (42.29321996991126, -71.26459288853798), pathway=False)  #  AC 1
     G.add_node("AC 2",    pos=(456, 240),  coords = (42.29363418081095, -71.26422001841294), pathway=False)  # AC 2
-    G.add_node("AC 3",    pos=(599, 149),  coords = (42.29386690104804, -71.2637380411814), pathway=False)   # AC 3
+    G.add_node("AC 3",    pos=(597, 137),  coords = (42.29386690104804, -71.2637380411814), pathway=False)   # AC 3
     G.add_node("AC 4",    pos=(404, 160),  coords = (42.29382686013987, -71.26440227411027), pathway=False)  # AC 4
     G.add_node("CC 1",    pos=(653, 376),  coords = (42.29328713953713, -71.26356098757215), pathway=False)  # CC 1
     G.add_node("CC 2",    pos=(717, 396),  coords = (42.29322457502598, -71.26333431385294), pathway=False)  # CC 2 (lower)
@@ -201,17 +201,17 @@ def build_graph(vis=False, csv_loc='node_connections.csv', csv_path_nodes ='path
                             edge_tuple = tuple(sorted([cur_node, con_node]))
                         edge_counter.add(edge_tuple)
                     else:
-                        # The nodes in the CSV ARENT in THE graph!!
+                        # The nodes in the CSV AREN'T in THE graph!!
                         if G.has_node(cur_node):
                             print(f"{con_node} is not in the networkx graph!")
                         else:
                             print(f"{cur_node} is not in the networkx graph!")
 
-        print(f'Added {len(edge_counter)} Unique edges to the graph from {csv_loc}')
+        # print(f'Added {len(edge_counter)} Unique edges to the graph from {csv_loc}')
         return G
 
 def visualize_graph(G, node_list, start_node, end_node, save_fig=False, 
-                    fig_name=None, new_edges=None, color="blue"):
+                    fig_name=None, new_edges=None, color="red"):
     """
     Displays the graph of nodes in node_list using Networkx and Matplotlib. If 
     save_fig=True, it does not display the graph but instead saves the entire 
@@ -228,24 +228,24 @@ def visualize_graph(G, node_list, start_node, end_node, save_fig=False,
             if i in node_list:
                 # hide pathway nodes from display
                 if pathway[i]:
-                    node_sizes.append(40)
+                    node_sizes.append(100)
                     node_labels[str(i)] = ""
                 else:
                     # change to .append(x > 0) to display non-pathway nodes
-                    node_sizes.append(200)
+                    node_sizes.append(100)
                     # change "" to str(i) to display node names
-                    node_labels[str(i)] = ""#str(i)
+                    node_labels[str(i)] = "" #str(i)
             else:
                 # remove unvisited nodes from display
                 G.remove_node(i)
         else:
             # display start and end nodes and labels
-            node_sizes.append(300)
+            node_sizes.append(400)
             node_labels[str(i)] = str(i)
 
     plt.figure(figsize=(10, 8))
     pos = nx.get_node_attributes(G, 'pos')
-    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color=color, font_size=12)
+    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color=color, font_size=9)
     # display edge lengths in feet
     # labels = nx.get_edge_attributes(G, 'weight')
     nx.draw_networkx_edges(G, pos, width=3, edge_color=color)
@@ -258,6 +258,41 @@ def visualize_graph(G, node_list, start_node, end_node, save_fig=False,
     # display figure in pop-up
     else:
         plt.show()
+
+def all_nodes(G):
+    """
+    Displays the graph of nodes in node_list using Networkx and Matplotlib. If 
+    save_fig=True, it does not display the graph but instead saves the entire 
+    figure as a png.
+    """
+    all_olin_nodes = list(G.nodes())
+    node_sizes = []
+    node_labels = {}
+    # pixel coordinates of node on satellite image of Olin's campus
+    pos = nx.get_node_attributes(G, 'pos')
+    pathway = nx.get_node_attributes(G, 'pathway')
+    for i in all_olin_nodes:
+        # hide pathway nodes from display
+        if pathway[i]:
+            node_sizes.append(0)
+            node_labels[str(i)] = ""
+        else:
+            # change to .append(x > 0) to display non-pathway nodes
+            node_sizes.append(400)
+            # change "" to str(i) to display node names
+            node_labels[str(i)] = str(i)
+
+    plt.figure(figsize=(10, 8))
+    pos = nx.get_node_attributes(G, 'pos')
+    nx.draw_networkx(G, pos, labels=node_labels, node_size=node_sizes, node_color='red', font_size=9)
+    # display edge lengths in feet
+    # labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edges(G, pos, width=0)
+    # display satellite image of Olin's campus as background
+    data = mpimg.imread('./images/olin_sat.png')
+    plt.imshow(data)
+    plt.show()
+
 
 def ordered_route(G, ordered_route):
     total_path = [ordered_route[0]]
@@ -282,3 +317,6 @@ if __name__ == "__main__":
     End = "WH 1"
     A = astar(g, Start, End)
     visualize_graph(g, A[0], Start, End)
+
+    # A = all_nodes(g)
+
