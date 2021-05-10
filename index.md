@@ -29,7 +29,7 @@ We used the [Networkx](https://networkx.org/) Python package, a ready-to-use gra
 Our implementation is loosely inspired by Google Maps’ use of Dijkstra’s algorithm as its path planning solution, which is detailed in [this article](https://www.vice.com/en/article/4x3pp9/the-simple-elegant-algorithm-that-makes-google-maps-possible). The algorithm used in our implementation, A\*, is an adaptation of Dijkstra’s algorithm that uses a heuristic to improve efficiency by selectively exploring possible paths according to the distance each path improves toward the destination. 
 The heuristic we used for the A* algorithm is the Euclidean distance between the current node and the destination node, which is calculated using each node’s longitude and latitude coordinate pair in. This heuristic acts as a metric for the optimality of a potential path. We used parts of the code from Homework 9 in our implementation of A*.
 
-![ASTAR Pseudocode](/images/astar_pseudo.png)
+![ASTAR Pseudocode](/astar_pseudo.png)
 
 > A* pseudocode
 
